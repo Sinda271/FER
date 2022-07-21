@@ -49,32 +49,5 @@ def Normalization(image):
     return norm_img
 
 
-if __name__ == "__main__":
 
-    # read image
-    FILENAME = r"Dataset\train\disgust\Training_96734926.jpg"
-    # FILENAME = r"C:\Users\sbesrour\Pictures\Camera Roll\WIN_20220715_10_57_11_Pro.jpg"
-    pixels = plt.imread(FILENAME)
-    if(len(pixels.shape) < 3):
-        pixels = cv2.cvtColor(pixels, cv2.COLOR_GRAY2RGB)
-
-    # Instantiate mtcnn detector and detect faces in image
-    detector = mtcnn.MTCNN()
-    faces = detector.detect_faces(pixels)
-    print(faces)
-
-    # Return original image if there is no face detected
-    if(len(faces) == 0):
-        img = return_original_image(FILENAME)
-        
-    # Return image with detected face with highest confidence
-    else:
-        img = draw_facebox_crop_face(FILENAME, faces)
-
-    img = Histogram_equalization(img)
-    img = Normalization(img)
-    # cv2.imshow('image',img)
-    # plt.imshow(img)
-    # plt.show()
-    cv2.imwrite("img.png", img)
     

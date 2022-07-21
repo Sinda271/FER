@@ -1,6 +1,6 @@
 from skimage import feature
 import numpy as np
-
+import cv2
 # ************************* Local bunary pattern ************************************
 
 def LBP(image, npoints, radius):
@@ -20,10 +20,27 @@ def sliding_hog_windows(image, image_height, image_width, window_step, window_si
 # ************************************ Landmarks ***********************************
 
 def get_landmarks(image, rects, predictor):
-    # this function have been copied from http://bit.ly/2cj7Fpq
+    
     if len(rects) > 1:
         raise BaseException("TooManyFaces")
     if len(rects) == 0:
         raise BaseException("NoFaces")
     return np.matrix([[p.x, p.y] for p in predictor(image, rects[0]).parts()])
 
+
+# ************************************ Gabor ***********************************
+
+def build_Gabor_filter(ksize):
+        filters = []
+        for theta in np.arange(0, np.pi, np.pi / 16):
+            kern = cv2.getGaborKernel((ksize, ksize), 4.0, theta, 10.0, 0.5, 0, ktype=cv2.CV_32F)
+            kern /= 1.5*kern.sum()
+            filters.append(kern)
+            return filters
+
+def apply_Gabor_filter(img, filters):
+    accum = np.zeros_like(img)
+    for kern in filters:
+        fimg = cv2.filter2D(img, cv2.CV_8UC3, kern)
+        np.maximum(accum, fimg, accum)
+        return accum
