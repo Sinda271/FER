@@ -1,5 +1,4 @@
 
-from cProfile import label
 from glob import glob
 import os
 PATH_TO_IMAGES = r"C:\Users\sbesrour\Desktop\personal\fer\Dataset\RAF\basic\Image\aligned\aligned"
