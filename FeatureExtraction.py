@@ -1,6 +1,7 @@
 from skimage import feature
 import numpy as np
 import cv2
+
 # ************************* Local bunary pattern ************************************
 
 def LBP(image, npoints, radius):
