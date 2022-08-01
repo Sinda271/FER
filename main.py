@@ -10,8 +10,8 @@ import dlib
 # FILENAME = r"C:\Users\sbesrour\Pictures\Camera Roll\WIN_20220715_10_57_11_Pro.jpg"
 DATASET_FOLDER = r"C:\Users\sbesrour\Desktop\personal\fer\Dataset\RAF\output"
 
-IMAGE_HEIGHT = 48
-IMAGE_WIDTH = 48
+IMAGE_HEIGHT = 100
+IMAGE_WIDTH = 100
 WINDOW_SIZE = 24
 WINDOW_STEP = 6
 GABOR_KERNEL_SIZE = 3
@@ -29,6 +29,7 @@ if __name__ == "__main__":
         if(len(pixels.shape) < 3):
             pixels = cv2.cvtColor(pixels, cv2.COLOR_GRAY2RGB)
 
+
         # Detect faces in image
         faces = detector.detect_faces(pixels)
         print(faces)
@@ -42,11 +43,12 @@ if __name__ == "__main__":
             img = draw_facebox_crop_face(path, faces)
 
         # Covert images to gray for histogram equalization  
-        img = cv2.cvtColor(pixels, cv2.COLOR_RGB2GRAY)
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
         img = Histogram_equalization(img)
+
         img = Normalization(img)
 
-        img = cv2.resize(img, (48, 48))
+        img = cv2.resize(img, (IMAGE_WIDTH, IMAGE_HEIGHT))
         
         # ******* Feature Extraction *************
 
@@ -55,15 +57,19 @@ if __name__ == "__main__":
 
         # HOG
         img_hog = sliding_hog_windows(img, IMAGE_HEIGHT, IMAGE_WIDTH, WINDOW_STEP, WINDOW_SIZE)
+        print(f"this is the HOG output shape: {img_hog.shape}")
 
         # Landmarks
         predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
         face_rects = [dlib.rectangle(left=1, top=1, right=47, bottom=47)]
         face_landmarks = get_landmarks(img, face_rects, predictor)
+        print(f"this is the landmarks output shape: {face_landmarks.shape}")
 
         # Gabor
         gabor_filter = build_Gabor_filter(GABOR_KERNEL_SIZE)
         img_gabor = apply_Gabor_filter(img, gabor_filter)
+        print(f"this is the GABOR output shape: {img_gabor.shape}")
+        
 
 
     # cv2.imwrite("img_gabor.png", img_gabor)

@@ -15,7 +15,7 @@ def sliding_hog_windows(image, image_height, image_width, window_step, window_si
         for x in range(0, image_width, window_step):
             window = image[y:y+window_size, x:x+window_size]
             hog_windows.extend(feature.hog(window, orientations=8, pixels_per_cell=(8, 8), cells_per_block=(1, 1)))
-    return hog_windows
+    return np.array(hog_windows)
 
 # ************************************ Landmarks ***********************************
 
