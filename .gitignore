@@ -1,4 +1,5 @@
 Dataset/
+model/
 .vscode/
 *.png
 *.log
