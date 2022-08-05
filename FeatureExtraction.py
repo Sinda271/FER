@@ -26,7 +26,7 @@ def get_landmarks(image, rects, predictor):
         raise BaseException("TooManyFaces")
     if len(rects) == 0:
         raise BaseException("NoFaces")
-    return np.matrix([[p.x, p.y] for p in predictor(image, rects[0]).parts()])
+    return np.asarray([[p.x, p.y] for p in predictor(image, rects[0]).parts()])
 
 
 # ************************************ Gabor ***********************************

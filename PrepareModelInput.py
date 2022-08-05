@@ -80,7 +80,8 @@ def build_model_input(datasetPath, imageHeight, imageWidth, windowSize, windowSt
         print(f"this is the GABOR output shape: {img_gabor.shape}")
 
         # combine hog, landmarks and gabor to represent one image
-        model_input = np.array([img_hog, face_landmarks, img_gabor])
+        model_input = np.concatenate((img_hog.flatten(), face_landmarks.flatten(), img_gabor.flatten()))
+        model_input = model_input[:-24].reshape(160, 160, 1) # 3203, 4, 2, 1
         print(f"this is the model input shape: {model_input.shape}")
 
         # put each model input in the appropriate array
