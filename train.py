@@ -1,6 +1,6 @@
 from PrepareModelInput import build_model_input
 import numpy as np
-from model import model
+from model import model, fix_to_categorical
 import tensorflow as tf
 
 DATASET_FOLDER = r"C:\Users\sbesrour\Desktop\personal\fer\Dataset\RAF\output"
@@ -31,12 +31,12 @@ if __name__ == "__main__":
         
         X_train = np.concatenate((angry, surprise, fear, disgust, happy, sad, neutral))
         y_train = np.concatenate((angry_label, surprise_label, fear_label, disgust_label, happy_label, sad_label, neutral_label))
-
+        y_train = fix_to_categorical(y_train)
         print(f"Features shape: {X_train}   labels shape: {y_train}")
 
         # Model
         model = model(input_shape=(160, 160, 1), num_classes=NUM_CLASSES)
-        model.fit(X_train, y_train, batch_size = 32, epochs = 100)
+        model.fit(X_train, y_train, batch_size = 10, epochs = 100)
         model.save('model')
     
 
