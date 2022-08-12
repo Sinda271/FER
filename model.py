@@ -3,7 +3,7 @@ from tensorflow.keras.layers import Dense, Dropout, Flatten
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import MaxPooling2D
-
+from tensorflow.keras.optimizers import SGD
 import tensorflow as tf
 
 NUM_CLASSES = 7
@@ -12,22 +12,22 @@ def model(input_shape, num_classes):
 
     model = Sequential()
 
-    model.add(Conv2D(32, kernel_size=(1, 1), activation='relu', input_shape=input_shape))
-    model.add(Conv2D(64, kernel_size=(1, 1), activation='relu'))
+    model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape))
+    # model.add(Conv2D(64, kernel_size=(1, 1), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(0.25))
 
-    model.add(Conv2D(128, kernel_size=(1, 1), activation='relu'))
-    model.add(MaxPooling2D(pool_size=(1, 1)))
-    model.add(Conv2D(128, kernel_size=(1, 1), activation='relu'))
-    model.add(MaxPooling2D(pool_size=(1, 1)))
-    model.add(Dropout(0.25))
+    # model.add(Conv2D(128, kernel_size=(1, 1), activation='relu'))
+    # model.add(MaxPooling2D(pool_size=(2, 2)))
+    # model.add(Conv2D(128, kernel_size=(1, 1), activation='relu'))
+    # model.add(MaxPooling2D(pool_size=(2, 2)))
+    # model.add(Dropout(0.25))
 
     model.add(Flatten())
-    model.add(Dense(128, activation='relu'))
+    model.add(Dense(32, activation='relu'))
     model.add(Dropout(0.5))
     model.add(Dense(num_classes, activation='softmax'))
-    model.compile(loss='categorical_crossentropy',optimizer=Adam(learning_rate=0.0001, decay=1e-6),metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy',optimizer=SGD(lr=0.0001),metrics=['accuracy'])
 
     return model
 
@@ -144,7 +144,8 @@ if __name__ == "__main__":
     print(neutral_label)
    
     model = model(input_shape=(160, 160, 1), num_classes=NUM_CLASSES)
-    model.fit(neutral, neutral_label, batch_size = 1, epochs = 6)
+    callback = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=4)
+    model.fit(neutral, neutral_label, batch_size = 1, epochs = 10, callbacks=[callback])
     model.save('model')
         
 

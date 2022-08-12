@@ -36,7 +36,8 @@ if __name__ == "__main__":
 
         # Model
         model = model(input_shape=(160, 160, 1), num_classes=NUM_CLASSES)
-        model.fit(X_train, y_train, batch_size = 10, epochs = 100)
+        callback = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=4)
+        model.fit(X_train, y_train, batch_size = 1, epochs = 1000, callbacks=[callback])
         model.save('model')
     
 
