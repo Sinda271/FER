@@ -1,3 +1,4 @@
+import glob
 from tensorflow import keras
 import cv2
 import matplotlib.pyplot as plt
@@ -8,9 +9,9 @@ from FeatureExtraction import sliding_hog_windows, get_landmarks, build_Gabor_fi
 import dlib
 from PIL import Image
 import os
+from model import model, fix_to_categorical
 
-
-TEST_IMAGE = r"C:\Users\sbesrour\Desktop\personal\fer\Dataset\FER2013\test\neutral\PrivateTest_687498.jpg"
+TEST_IMAGES = r"C:\Users\sbesrour\Desktop\personal\fer\Dataset\FER2013\test\happy\*"
 IMAGE_HEIGHT = 100
 IMAGE_WIDTH = 100
 WINDOW_SIZE = 24
@@ -46,8 +47,16 @@ def classify(path, imageHeight, imageWidth, windowSize, windowStep, gaborKerSize
         img = draw_facebox_crop_face(path, faces)
 
     # Covert images to gray for histogram equalization 
-    img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR) 
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    if(len(img.shape)) > 2:  
+        print("ifff 111111111111")
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    else: 
+        print("ifff 22222222222222")
+        
+        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        
+
     img = Histogram_equalization(img)
 
     img = Normalization(img)
@@ -70,7 +79,7 @@ def classify(path, imageHeight, imageWidth, windowSize, windowStep, gaborKerSize
 
     # combine hog, landmarks and gabor to represent one image
     model_input = np.concatenate((img_hog.flatten(), face_landmarks.flatten(), img_gabor.flatten()))
-    model_input = model_input[:-24].reshape(1, 160, 160, 1) # 3203, 4, 2, 1
+    model_input = model_input[:-24].reshape(160, 160, 1) # 3203, 4, 2, 1
     print(f"this is the model input shape: {model_input.shape}")
 
     if os.path.isfile(path[:-3] + "png"):
@@ -83,6 +92,24 @@ if __name__ == "__main__":
     model = keras.models.load_model('model')
     model.summary()
 
-    model_inp = classify(TEST_IMAGE, IMAGE_HEIGHT, IMAGE_WIDTH, WINDOW_SIZE, WINDOW_STEP, GABOR_KERNEL_SIZE)
-    prediction = model.predict(model_inp)
+    X_test = []
+    images = glob.glob(TEST_IMAGES)
+    for pth in images[:5]:
+        model_inp = classify(pth, IMAGE_HEIGHT, IMAGE_WIDTH, WINDOW_SIZE, WINDOW_STEP, GABOR_KERNEL_SIZE)
+        X_test.append(model_inp)
+    X_test = np.array(X_test)
+    print(X_test.shape)
+    prediction = model.predict(X_test)
     print(prediction)
+
+
+    # angry_label = np.array([1 for i in range(5)])
+    # surprise_label = np.array([2 for i in range(5)])
+    # fear_label = np.array([3 for i in range(5)])
+    # disgust_label = np.array([4 for i in range(5)])
+    # happy_label = np.array([5 for i in range(5)])
+    # sad_label = np.array([6 for i in range(5)])
+    # neutral_label = np.array([7 for i in range(5)])
+    # y_train = np.concatenate((angry_label, surprise_label, fear_label, disgust_label, happy_label, sad_label, neutral_label))
+    # y_train = fix_to_categorical(y_train)
+    # print(y_train)

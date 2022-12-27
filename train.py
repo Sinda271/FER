@@ -3,7 +3,8 @@ import numpy as np
 from model import model, fix_to_categorical
 import tensorflow as tf
 
-DATASET_FOLDER = r"C:\Users\sbesrour\Desktop\personal\fer\Dataset\RAF\output"
+# DATASET_FOLDER = r"C:\Users\sbesrour\Desktop\personal\fer\Dataset\RAF\output"
+DATASET_FOLDER = r"C:\Users\sbesrour\Desktop\personal\fer\Dataset\RAFER"
 IMAGE_HEIGHT = 100
 IMAGE_WIDTH = 100
 WINDOW_SIZE = 24

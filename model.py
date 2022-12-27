@@ -49,7 +49,7 @@ def fix_to_categorical(y_train):
 # from FeatureExtraction import LBP, sliding_hog_windows, get_landmarks, build_Gabor_filter, apply_Gabor_filter
 # import dlib
 # from pathlib import Path
-# DATASET_FOLDER = r"C:\Users\sbesrour\Desktop\personal\fer\Dataset\RAF\output"
+# DATASET_FOLDER = r"C:\Users\sbesrour\Desktop\personal\fer\Dataset\RAFER"
 # IMAGE_HEIGHT = 100
 # IMAGE_WIDTH = 100
 # WINDOW_SIZE = 24
@@ -64,11 +64,12 @@ def fix_to_categorical(y_train):
 #     # Instantiate mtcnn detector
 #     detector = mtcnn.MTCNN()
 
-#     for path in images[:10]:
-#         # read image
+#     for path in images[4000:4010]:
+#          # read image
 #         print(path)
 #         pth = Path(path)
 #         print("***************************** ", pth.parent.name)
+        
 #         pixels = plt.imread(path)
 #         if(len(pixels.shape) < 3):
 #             pixels = cv2.cvtColor(pixels, cv2.COLOR_GRAY2RGB)
@@ -86,8 +87,24 @@ def fix_to_categorical(y_train):
 #         else:
 #             img = draw_facebox_crop_face(path, faces)
 
-#         # Covert images to gray for histogram equalization  
-#         img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+#         # Covert images to gray for histogram equalization
+#         if(len(img.shape) > 2): 
+#             print("ifff 111111111111") 
+#             img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+       
+#         else: 
+#             print("ifff 222222222222")
+#         #     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+#         #     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+
+#         if(type(img[0][0]) == np.float32):
+#             img = 255*img
+#             img = img.astype(np.uint8)
+    
+        
+        
+            
 #         img = Histogram_equalization(img)
 
 #         img = Normalization(img)
@@ -115,13 +132,8 @@ def fix_to_categorical(y_train):
 #         print(f"this is the GABOR output shape: {img_gabor.shape}")
 
 #         # combine hog, landmarks and gabor to represent one image
-#         # model_input = torch.cat((torch.flatten(img_hog), torch.flatten(face_landmarks), torch.flatten(img_gabor)))
-#         # model_input = np.array([img_hog, face_landmarks, img_gabor])
 #         model_input = np.concatenate((img_hog.flatten(), face_landmarks.flatten(), img_gabor.flatten()))
 #         model_input = model_input[:-24].reshape(160, 160, 1) # 3203, 4, 2, 1
-#         # print(model_input)
-#         # model_input = np.reshape(model_input, (3, 1))
-#         # model_input = np.array(model_input, dtype=np.float32)
 #         print(f"this is the model input shape: {model_input.shape}")
 
 #         # put each model input in the appropriate array
