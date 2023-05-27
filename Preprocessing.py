@@ -1,7 +1,7 @@
-import cv2
+
 import matplotlib.pyplot as plt
 import numpy as np
-
+import cv2
 def get_max_confidence(mtcnn_results):
     confidence = []
     for res in mtcnn_results:
@@ -10,13 +10,9 @@ def get_max_confidence(mtcnn_results):
 
 
 def draw_facebox_crop_face(filename, result_list):
-
     max_confidence = get_max_confidence(result_list)
     # load the image
     data = plt.imread(filename)
-    # get the context for drawing boxes
-    # ax = plt.gca()
-    # plot each box
     for result in result_list:
         # get result with highest confidence
         if(result['confidence'] == max_confidence):
@@ -25,7 +21,6 @@ def draw_facebox_crop_face(filename, result_list):
             # create the shape
             rect = plt.Rectangle((x, y), width, height, fill=False, color='green')
             # draw the box
-            # ax.add_patch(rect)
             cropped_img = data[y:y+height, x:x+width]
             
     return cropped_img

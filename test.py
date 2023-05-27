@@ -11,7 +11,7 @@ from PIL import Image
 import os
 from model import model, fix_to_categorical
 
-TEST_IMAGES = r"C:\Users\sbesrour\Desktop\personal\fer\Dataset\FER2013\test\happy\*"
+TEST_IMAGES = r"D:\PythonProjects\FER\Dataset\test\happy\*"
 IMAGE_HEIGHT = 100
 IMAGE_WIDTH = 100
 WINDOW_SIZE = 24
@@ -48,11 +48,8 @@ def classify(path, imageHeight, imageWidth, windowSize, windowStep, gaborKerSize
 
     # Covert images to gray for histogram equalization 
     if(len(img.shape)) > 2:  
-        print("ifff 111111111111")
         img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    else: 
-        print("ifff 22222222222222")
-        
+    else:   
         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         
@@ -102,14 +99,3 @@ if __name__ == "__main__":
     prediction = model.predict(X_test)
     print(prediction)
 
-
-    # angry_label = np.array([1 for i in range(5)])
-    # surprise_label = np.array([2 for i in range(5)])
-    # fear_label = np.array([3 for i in range(5)])
-    # disgust_label = np.array([4 for i in range(5)])
-    # happy_label = np.array([5 for i in range(5)])
-    # sad_label = np.array([6 for i in range(5)])
-    # neutral_label = np.array([7 for i in range(5)])
-    # y_train = np.concatenate((angry_label, surprise_label, fear_label, disgust_label, happy_label, sad_label, neutral_label))
-    # y_train = fix_to_categorical(y_train)
-    # print(y_train)

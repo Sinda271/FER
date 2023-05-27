@@ -1,5 +1,8 @@
+__pycache__
 Dataset/
+env/
 model/
 .vscode/
 *.png
 *.log
+*.dat

@@ -2,7 +2,7 @@ from skimage import feature
 import numpy as np
 import cv2
 
-# ************************* Local bunary pattern ************************************
+# ************************* Local binary pattern ************************************
 
 def LBP(image, npoints, radius):
     lbp = feature.local_binary_pattern(image, npoints, radius, method="uniform")

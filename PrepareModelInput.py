@@ -9,7 +9,7 @@ import dlib
 from pathlib import Path
 from PIL import Image
 import os
-DATASET_FOLDER = r"C:\Users\sbesrour\Desktop\personal\fer\Dataset\RAF\output"
+DATASET_FOLDER = r"D:\PythonProjects\FER\Dataset\train"
 IMAGE_HEIGHT = 100
 IMAGE_WIDTH = 100
 WINDOW_SIZE = 24
